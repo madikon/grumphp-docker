@@ -1,0 +1,10 @@
+nav {
+  main = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+  main {
+    special = directory
+    special.value = 4
+    levels = 1
+    as = mainnavigation
+  }
+}
+

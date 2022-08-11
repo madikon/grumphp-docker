@@ -1,0 +1,12 @@
+{
+    "name": "madikon/grumphp-docker-test",
+    "description": "GrumpPHP wrapped in a Docker container test",
+    "require": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Madikon\\": "src"
+        }
+    }
+}

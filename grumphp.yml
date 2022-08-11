@@ -1,0 +1,64 @@
+parameters:
+  config_dir: "test/.grumphp"
+  source_dir: "test/src"
+  convention.yamllint_ignore_pattern: []
+  convention.phpmd_ruleset: "%config_dir%/phpmd.xml"
+  convention.phpmd_whitelist_patterns: "%source_dir%"
+  convention.phpunit_config: "%config_dir%/unittests.xml"
+  convention.phpcsfixer_config: "%config_dir%/php-cs-fixer.php"
+  convention.psalm_config: "%config_dir%/psalm.xml"
+  convention.phpstan_config: "%config_dir%/phpstan.neon"
+  convention.typoscriptlint_config: "%config_dir%/typoscript-lint.yaml"
+grumphp:
+  git_hook_variables:
+    EXEC_GRUMPHP_COMMAND: 'docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker'
+  process_timeout: 60
+  tasks:
+    psalm:
+      config: "%convention.psalm_config%"
+      output_format: "console"
+    phpstan:
+      configuration: "%convention.phpstan_config%"
+      use_grumphp_paths: false
+    phpmd:
+      ruleset: ["%convention.phpmd_ruleset%"]
+      whitelist_patterns: ["%convention.phpmd_whitelist_patterns%"]
+    phpcsfixer:
+      config: "%convention.phpcsfixer_config%"
+    phplint: ~
+    yamllint:
+      whitelist_patterns:
+        - "%source_dir%"
+      ignore_patterns: "%convention.yamllint_ignore_pattern%"
+    securitychecker_local:
+      lockfile: test/composer.lock
+      format: ~
+      run_always: false
+    phpunit:
+      config_file: "%convention.phpunit_config%"
+    typoscriptlint:
+      config: "%convention.typoscriptlint_config%"
+      paths: 
+        - "%source_dir%"
+
+  extensions:
+    - TSystems\GrumphpTypoScriptLint\Extension\Loader
+
+  testsuites:
+    security:
+      tasks:
+        - securitychecker_local
+    phpunit:
+      tasks:
+        - phpunit
+    codequality:
+      tasks:
+        - psalm
+        - phpmd
+        - phpstan
+        - phpcsfixer
+    lint:
+      tasks:
+        - typoscriptlint
+        - yamllint
+        - phplint

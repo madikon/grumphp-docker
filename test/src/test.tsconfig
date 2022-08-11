@@ -1,0 +1,10 @@
+TCEFORM {
+  tt_content {
+    cType.removeItems = bullets, table, div, textpic
+  }
+
+  pages {
+    backend_layout.removeItems = -1
+    backend_layout_next_level.removeItems = -1
+  }
+}
