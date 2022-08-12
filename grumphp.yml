@@ -8,7 +8,6 @@ parameters:
   convention.phpcsfixer_config: "%config_dir%/php-cs-fixer.php"
   convention.psalm_config: "%config_dir%/psalm.xml"
   convention.phpstan_config: "%config_dir%/phpstan.neon"
-  convention.typoscriptlint_config: "%config_dir%/typoscript-lint.yaml"
 grumphp:
   git_hook_variables:
     EXEC_GRUMPHP_COMMAND: 'docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker'
@@ -33,11 +32,10 @@ grumphp:
     securitychecker_local:
       lockfile: test/composer.lock
       format: ~
-      run_always: false
+      run_always: true
     phpunit:
       config_file: "%convention.phpunit_config%"
     typoscriptlint:
-      config: "%convention.typoscriptlint_config%"
       paths: 
         - "%source_dir%"
 

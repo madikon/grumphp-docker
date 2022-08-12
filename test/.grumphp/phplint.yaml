@@ -1,5 +1,0 @@
-path: test/src
-jobs: 10
-cache: /grumphp/.phplint.cache
-extensions:
-  - php
