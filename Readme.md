@@ -66,7 +66,7 @@ docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker grumphp git:init
 ```
 "scripts": {
     "post-install-cmd": [
-        "docker pull madlenka/grumphp-docker && docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker grumphp git:init"
+        "docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker grumphp git:init"
     ]
   }
 ```
