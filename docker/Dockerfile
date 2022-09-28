@@ -8,7 +8,8 @@ RUN set -eux; \
 
 RUN set -eux; \
     apk --no-cache update && \
-    apk --no-cache add tzdata git zip && \
+    apk --no-cache add tzdata git zip libzip-dev && \
+    docker-php-ext-install zip && \
     cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
     echo "Europe/Berlin" > /etc/timezone
 

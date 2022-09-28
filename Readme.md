@@ -3,6 +3,8 @@
 This container contains [Grumphp](https://github.com/phpro/grumphp)  with some code quality tools that I use in my web projects. 
 The container can be used for projects that do not want to have all composer dev dependencies in the project itself.
 
+Another advantage is that the execution time in a CI pipeline is much shorter, since the composer dependencies do not need to be installed.
+
 Currently is contains the following tools
                                               |
 * [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Fixes your php code to the PSR12 standard.
@@ -24,13 +26,11 @@ The folder ".grumphp" the cofiguration files for the tools you wanna use.
 root
 ├── .grumphp
 │   ├─ php-cs-fixer.php
-│   ├─ phplint.yaml
 │   ├─ phpmd.xml
 │   ├─ phpstan.neon
 │   ├─ psalm.xml
 │   ├─ unittests.xml
 │   ├─ typoscript-lint.yaml
-│   ├─ yamlintl.yaml
 ├── src
 ├── grumphp.yaml
 ├── composer.json
@@ -70,35 +70,55 @@ docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker grumphp git:init
     ]
   }
 ```
+
+or you can run the command automatically during project startup in development environments like ddev
+
+```yaml
+# add the followin configuration to .ddev/config.yaml 
+hooks:
+  post-start:
+    - exec-host: docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker grumphp git:init
+```
+
+To run php-cs-fixer standalone, you can also run it as follows:
+
+```bash
+docker run -it --rm -v $(pwd):/grumphp madlenka/grumphp-docker php-cs-fixer fix "src" --config ".grumphp/.php-cs-fixer.php"
+```
+
 # Build and test container
 
-## Build Dev
+## Prepare (Mac)
+
+Install buildx via hombrew
+
+```bash
+brew install docker-buildx
+```
+
+To build a docker multi-platform image, we need to create a new builder which gives access to the multi-architecture build feature:
+
+```bash
+docker buildx create --name builder
+docker buildx use builder
+```
+
+Check if everthing is ok
+
+```bash
+docker buildx inspect --bootstrap
+```
+
+## Build, Test and Release
 
 ```bash
 git clone https://github.com/madikon/grumphp-docker.git
 cd grumphp-docker
 
-# Dev build
+# Dev build and test
 make build-dev
-
-# Release build 
-make build version=1.0.0
-```
-
-## Test 
-
-```bash
-make install 
 make test
+
+# Build and Release 
+make release version=1.0.1
 ```
-
-## Push 
-
-```bash
-make push version=1.0.0
-```
-
-
-
-
-

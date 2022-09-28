@@ -1,5 +1,5 @@
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
-VERSION='1.0.0'
+VERSION='1.0.1'
 FABOT_SECURITY_CHECKER_VERSION=2.0.4
 PHP_VERSION=8.1
 
@@ -12,7 +12,7 @@ install:
 	composer install -d ./test
 
 build-dev:
-	docker build --force-rm --no-cache -t madlenka/grumphp-docker \
+	docker buildx build --platform linux/arm64/v8 --load --force-rm --no-cache -t madlenka/grumphp-docker \
 		--build-arg=PHP_VERSION=$(PHP_VERSION) \
 		--build-arg=FABOT_SECURITY_CHECKER_VERSION=$(FABOT_SECURITY_CHECKER_VERSION) docker/
 
@@ -22,16 +22,11 @@ test:
 ssh:
 	docker run --rm -it -v $$(pwd):/grumphp madlenka/grumphp-docker /bin/sh
 
-
-build: 
+release: 
 	@echo "Building madlenka/grumphp-docker:latest and madlenka/grumphp-docker:$(version)"
-	docker build --force-rm --no-cache -t madlenka/grumphp-docker \
+	docker buildx build --push --platform linux/amd64,linux/arm64/v8 \
 		--build-arg=PHP_VERSION=$(PHP_VERSION) \
 		--build-arg=FABOT_SECURITY_CHECKER_VERSION=$(FABOT_SECURITY_CHECKER_VERSION) \
-		-t madlenka/grumphp-docker:latest \
-		-t madlenka/grumphp-docker:$(version) docker/
-
-push:
-	@echo "Pushing madlenka/grumphp-docker:latest and madlenka/grumphp-docker:$(version)"
-	docker push madlenka/grumphp-docker:latest
-	docker push madlenka/grumphp-docker:$(version)
+		--tag madlenka/grumphp-docker:latest \
+		--tag madlenka/grumphp-docker:$(VERSION) \
+		 docker/
