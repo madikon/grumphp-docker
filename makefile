@@ -1,6 +1,6 @@
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
-VERSION='1.0.1'
-FABOT_SECURITY_CHECKER_VERSION=2.0.4
+VERSION='1.0.2'
+FABOT_SECURITY_CHECKER_VERSION=2.0.6
 PHP_VERSION=8.1
 
 .PHONY: list build-dev build push install test
@@ -11,7 +11,12 @@ list:
 install:
 	composer install -d ./test
 
-build-dev:
+build-dev-amd:
+	docker buildx build --platform linux/amd64 --load --force-rm --no-cache -t madlenka/grumphp-docker \
+		--build-arg=PHP_VERSION=$(PHP_VERSION) \
+		--build-arg=FABOT_SECURITY_CHECKER_VERSION=$(FABOT_SECURITY_CHECKER_VERSION) docker/
+
+build-dev-arm:
 	docker buildx build --platform linux/arm64/v8 --load --force-rm --no-cache -t madlenka/grumphp-docker \
 		--build-arg=PHP_VERSION=$(PHP_VERSION) \
 		--build-arg=FABOT_SECURITY_CHECKER_VERSION=$(FABOT_SECURITY_CHECKER_VERSION) docker/

@@ -116,9 +116,10 @@ git clone https://github.com/madikon/grumphp-docker.git
 cd grumphp-docker
 
 # Dev build and test
-make build-dev
+make build-dev-amd
+make install
 make test
 
 # Build and Release 
-make release version=1.0.1
+make release version=1.0.2
 ```
