@@ -9,6 +9,8 @@ return (new \PhpCsFixer\Config())
     ->setRules(
         [
             '@PSR12' => true,
+            'no_unused_imports' => true,
+            'array_syntax' => ['syntax' => 'short']
         ]
     )
     ->setFinder($finder);

@@ -3,13 +3,14 @@
     "description": "GrumpPHP wrapped in a Docker container",
     "require": {
         "friendsofphp/php-cs-fixer": "^3",
-        "tsystems/grumphp-typoscript-lint": "^1.0",
+        "madikon/grumphp-typoscript-lint": "^1.0",
+        "madikon/grumphp-composer-audit": "^1.0",
         "phpmd/phpmd": "^2",
-        "vimeo/psalm": "^4",
+        "vimeo/psalm": "^5",
         "php-parallel-lint/php-parallel-lint": "^1",
         "phpstan/phpstan": "^1",
-        "phpro/grumphp": "^1.15",
-        "phpunit/phpunit": "^9.5"
+        "phpro/grumphp": "^1.16",
+        "phpunit/phpunit": "^10.1"
     },
     "config": {
         "allow-plugins": {

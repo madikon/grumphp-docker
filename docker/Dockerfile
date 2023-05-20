@@ -1,4 +1,4 @@
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.2
 
 FROM php:${PHP_VERSION}-alpine
 
@@ -27,10 +27,6 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 COPY ./composer.json /root/.composer/composer.json 
 
 RUN composer global install
-
-ARG VERSION_FABOT_SECURITY_CHECKER=2.0.4
-RUN curl -sSL https://github.com/fabpot/local-php-security-checker/releases/download/v${VERSION_FABOT_SECURITY_CHECKER}/local-php-security-checker_${VERSION_FABOT_SECURITY_CHECKER}_linux_amd64 -o /usr/local/bin/local-php-security-checker && \
-    chmod +x /usr/local/bin/local-php-security-checker
 
 ENV PATH=$PATH:/root/.composer/vendor/bin
 

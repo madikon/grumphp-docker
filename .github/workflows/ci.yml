@@ -1,0 +1,82 @@
+name: Test
+
+on: [ push ]
+
+jobs:
+  Test:
+    name: Test with PHP ${{ matrix.php }}
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        php: ['8.1', '8.2']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true
+          tags: madlenka/grumphp-docker:test-${{ matrix.php }}
+          build-args: |
+            PHP_VERSION=${{ matrix.php }}
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: error_reporting=-1, display_errors=On
+          coverage: none
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: --no-scripts --no-plugins -d test
+
+      - name: Test
+        run: |
+          docker run --rm -v $$(pwd)/test:/grumphp madlenka/grumphp-docker:test-${{ matrix.php }} grumphp run -vvv
+
+  Publish:
+    name: Build with PHP ${{ matrix.php }}
+    runs-on: 'ubuntu-latest'
+    needs: Test
+    strategy:
+      matrix:
+        php: [ 
+          { version: '8.1', tags: 'madlenka/grumphp-docker:8.1-${{  github.ref_name }}' },
+          { version: '8.2', tags: 'madlenka/grumphp-docker:8.2-${{  github.ref_name }} madlenka/grumphp-docker:latest' } 
+        ]
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ matrix.php.tags }}
+          build-args: |
+            PHP_VERSION=${{ matrix.php.version }}

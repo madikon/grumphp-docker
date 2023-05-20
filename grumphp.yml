@@ -29,23 +29,22 @@ grumphp:
       whitelist_patterns:
         - "%source_dir%"
       ignore_patterns: "%convention.yamllint_ignore_pattern%"
-    securitychecker_local:
-      lockfile: test/composer.lock
-      format: ~
-      run_always: true
     phpunit:
       config_file: "%convention.phpunit_config%"
     typoscriptlint:
       paths: 
         - "%source_dir%"
+    composer_audit: ~
+
 
   extensions:
-    - TSystems\GrumphpTypoScriptLint\Extension\Loader
+    - Madikon\GrumphpTypoScriptLint\Extension\Loader
+    - Madikon\GrumphpComposerAudit\Extension\Loader
 
   testsuites:
     security:
       tasks:
-        - securitychecker_local
+        - composer_audit
     phpunit:
       tasks:
         - phpunit

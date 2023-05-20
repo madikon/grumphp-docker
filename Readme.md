@@ -15,7 +15,7 @@ Currently is contains the following tools
 * [TypoScript Lint](https://github.com/martin-helmich/typo3-typoscript-lint). Find coding errors in your TypoScript files.  
 * [yamllint](https://yamllint.readthedocs.io/en/stable/). A Linter for YAML files
 * [PHP Parallel Lint](https://github.com/php-parallel-lint/PHP-Parallel-Lint). A Linter for PHP files.   
-* [Local PHP Security Checker](https://github.com/fabpot/local-php-security-checker). Checks if your PHP application depends on PHP packages with known security vulnerabilities
+* [Composer Audit](https://getcomposer.org/doc/03-cli.md#audit). This command is used to audit the packages you have installed for possible security issues.
 
 ## Usage
 
