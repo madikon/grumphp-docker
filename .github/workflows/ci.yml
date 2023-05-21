@@ -43,7 +43,7 @@ jobs:
 
       - name: Test
         run: |
-          docker run --rm -v $$(pwd)/test:/grumphp madlenka/grumphp-docker:test-${{ matrix.php }} grumphp run -vvv
+          docker run --rm -v $(pwd):/grumphp madlenka/grumphp-docker:test-${{ matrix.php }} grumphp run -vvv
 
   Publish:
     name: Build with PHP ${{ matrix.php }}
