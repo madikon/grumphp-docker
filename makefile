@@ -12,11 +12,11 @@ install:
 
 build-dev-amd:
 	docker buildx build --platform linux/amd64 --load --force-rm --no-cache -t madlenka/grumphp-docker \
-		--build-arg=PHP_VERSION=$(PHP_VERSION)
+		--build-arg=PHP_VERSION=$(PHP_VERSION) docker/
 
 build-dev-arm:
 	docker buildx build --platform linux/arm64/v8 --load --force-rm --no-cache -t madlenka/grumphp-docker \
-		--build-arg=PHP_VERSION=$(PHP_VERSION)
+		--build-arg=PHP_VERSION=$(PHP_VERSION) docker/
 
 test:
 	docker run --rm -it -v $$(pwd):/grumphp madlenka/grumphp-docker grumphp run -vvv
