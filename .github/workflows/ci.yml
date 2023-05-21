@@ -38,7 +38,8 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
         with:
-          composer-options: --no-scripts --no-plugins -d test
+          working-directory: test
+          composer-options: --no-scripts --no-plugins
 
       - name: Test
         run: |
