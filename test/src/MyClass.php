@@ -19,7 +19,6 @@ class MyClass
     public function setVariable(string $value): MyClass
     {
         $this->variable = $value;
-
         return $this;
     }
 

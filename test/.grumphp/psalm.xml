@@ -1,15 +1,18 @@
 <?xml version="1.0"?>
 <psalm
     errorLevel="3"
-    resolveFromConfigFile="false"
+    resolveFromConfigFile="true"
+    findUnusedBaselineEntry="false"
+    findUnusedCode="false"
+    autoloader="../vendor/autoload.php"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config /root/.composer/vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="/grumphp/test/src" />
+        <directory name="../src" />
          <ignoreFiles>
-            <directory name="/grumphp/test/vendor" />
+            <directory name="../vendor" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

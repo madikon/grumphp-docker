@@ -1,5 +1,5 @@
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
-VERSION='1.0.4'
+VERSION='2.0.0'
 PHP_VERSION=8.2
 
 .PHONY: list build-dev-arm build-dev-amd build push install test
